@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapping a Custom Domain | Harish Dev Log</title>
+    <title>Building My Portfolio | Harish Dev Log</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -15,62 +15,62 @@
     </nav>
 
     <article class="max-w-3xl mx-auto px-6 pb-20">
-        <header class="mb-10">
-            <span class="text-gray-400 font-mono text-sm uppercase tracking-widest">March 10, 2026</span>
-            <h1 class="text-4xl md:text-6xl font-black text-gray-900 mt-2 mb-6 tracking-tight">Mapping a Custom Domain</h1>
-            <div class="flex items-center space-x-3">
-                <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">H</div>
+        <header class="mb-12">
+            <span class="text-blue-500 font-mono text-xs font-bold tracking-widest uppercase bg-blue-50 px-3 py-1 rounded-full">DevOps & Web</span>
+            <h1 class="text-4xl md:text-6xl font-black text-gray-900 mt-4 mb-6 tracking-tight leading-tight">Zero to Live: How I Architected this Website</h1>
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg rotate-3 text-xl">H</div>
                 <div>
-                    <p class="font-bold text-gray-900 leading-none">Harish</p>
-                    <p class="text-sm text-gray-500">CSE Engineer • Android Developer</p>
+                    <p class="font-bold text-gray-900 leading-none text-lg">Harish</p>
+                    <p class="text-sm text-gray-500">CSE Engineer • Infrastructure & Android</p>
                 </div>
             </div>
         </header>
 
-        <div class="prose prose-blue lg:prose-xl text-gray-700 leading-relaxed space-y-6 text-lg">
-            <p class="first-letter:text-5xl first-letter:font-bold first-letter:mr-3 first-letter:float-left">
-                Today marks a major milestone for my portfolio. I successfully moved away from the default GitHub sub-domain to my personal domain: <code class="bg-gray-100 px-2 py-1 rounded text-blue-600">harishcodes.online</code>.
+        <div class="prose prose-blue lg:prose-xl text-gray-700 leading-relaxed space-y-8 text-lg">
+            <p class="italic text-xl text-gray-500 border-l-4 border-blue-200 pl-6">
+                "As a CSE engineer, I didn't want a drag-and-drop site. I wanted a deployment pipeline I could control."
             </p>
 
-            <h2 class="text-3xl font-bold text-gray-900 pt-6">The Challenge: 404s and DNS Lag</h2>
-            <p>Initially, I faced the dreaded 404 error. This usually happens for two reasons: a missing <code class="bg-gray-100 px-1 rounded">CNAME</code> file in the repository or incorrect A-Records in the DNS provider (Hostinger, in my case).</p>
+            <h2 class="text-3xl font-bold text-gray-900">Step 1: The Tech Stack Choice</h2>
+            <p>I chose <strong>GitHub Pages</strong> for hosting. It's free, fast, and integrates directly with my git workflow. For styling, I used <strong>Tailwind CSS</strong> via CDN to keep the initial load time under 500ms.</p>
 
-            <h2 class="text-3xl font-bold text-gray-900 pt-6">The DNS Configuration</h2>
-            <p>For an apex domain (the main domain without 'www'), GitHub recommends using four specific IP addresses. I had to go into my Hostinger panel, delete the default parking records, and add these:</p>
+            <h2 class="text-3xl font-bold text-gray-900">Step 2: DNS & Domain Mapping</h2>
+            <p>I purchased <code class="bg-gray-100 px-1 rounded text-blue-600">harishcodes.online</code>. Mapping this required updating the <strong>A Records</strong> in my DNS provider to point to GitHub's global edge servers.</p>
+            
+            
 
-            <div class="bg-gray-900 rounded-xl p-6 my-8 shadow-2xl overflow-x-auto">
-                <table class="w-full text-sm font-mono text-blue-300">
-                    <thead>
-                        <tr class="border-b border-gray-700 text-gray-400 uppercase text-xs">
-                            <th class="text-left py-2">Type</th>
-                            <th class="text-left py-2">Name</th>
-                            <th class="text-left py-2">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="py-1">A</td><td class="py-1">@</td><td class="py-1">185.199.108.153</td></tr>
-                        <tr><td class="py-1">A</td><td class="py-1">@</td><td class="py-1">185.199.109.153</td></tr>
-                        <tr><td class="py-1">A</td><td class="py-1">@</td><td class="py-1">185.199.110.153</td></tr>
-                        <tr><td class="py-1">A</td><td class="py-1">@</td><td class="py-1">185.199.111.153</td></tr>
-                    </tbody>
-                </table>
+            <div class="bg-gray-50 border border-gray-100 p-6 rounded-2xl font-mono text-sm space-y-2">
+                <p class="text-blue-600 font-bold tracking-tighter uppercase mb-4">Hostinger A-Records Used:</p>
+                <p>185.199.108.153</p>
+                <p>185.199.109.153</p>
+                <p>185.199.110.153</p>
+                <p>185.199.111.153</p>
             </div>
 
-            <h2 class="text-3xl font-bold text-gray-900 pt-6">Verifying the Setup</h2>
-            <p>As a CSE engineer, I don't just wait for it to work; I verify it via the terminal. Using the <code class="bg-gray-100 px-1 rounded">dig</code> command, I checked if the propagation was complete:</p>
+            <h2 class="text-3xl font-bold text-gray-900">Step 3: Solving the 404 & Directory Logic</h2>
+            <p>The biggest challenge was the directory structure. I wanted a separate <strong>/blog</strong> subdirectory. Initially, I faced 404 errors because the <code class="bg-gray-100 px-1 rounded">index.html</code> was in the wrong folder.</p>
+            
+            <p><strong>The Fix:</strong> Keeping the main portfolio at the root <code class="bg-gray-100 px-1 rounded">/</code> and the blog index at <code class="bg-gray-100 px-1 rounded">/blog/</code>.</p>
 
-            <pre class="rounded-xl shadow-lg !bg-gray-900"><code class="language-bash"># Checking my new DNS setup
-dig harishcodes.online
+            
 
-# Expected result: 4 A records pointing to GitHub IPs</code></pre>
+            <pre class="rounded-xl shadow-lg !bg-gray-900 font-mono text-sm"><code class="language-text">root/
+├── index.html     # Main Portfolio
+├── CNAME          # harishcodes.online
+└── blog/
+    └── index.html # Blog Feed List</code></pre>
 
-            <h2 class="text-3xl font-bold text-gray-900 pt-6">The Final Piece: SSL & Root Files</h2>
-            <p>The final hurdle was ensuring my <code class="bg-gray-100 px-1 rounded">index.html</code> was in the <strong>root</strong> directory and not tucked away in a folder. Once GitHub's "Actions" finished building, I enabled <strong>Enforce HTTPS</strong> in settings. Now, the site is live, secure, and ready for my upcoming Android projects!</p>
+            <h2 class="text-3xl font-bold text-gray-900">Step 4: SSL & Security</h2>
+            <p>Once the DNS was verified, I enabled <strong>Enforce HTTPS</strong>. GitHub automatically generated a TLS certificate via Let's Encrypt, ensuring all data between my readers and the server is encrypted.</p>
 
+            <div class="mt-16 pt-10 border-t border-gray-100">
+                <h3 class="text-2xl font-bold mb-4">What's Next?</h3>
+                <p>Now that the foundation is solid, I'll be documenting the development of <strong>Smart Tools</strong> and my <strong>Spring Boot</strong> backend integration on AWS. Stay tuned!</p>
+            </div>
         </div>
     </article>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
 </body>
 </html>
