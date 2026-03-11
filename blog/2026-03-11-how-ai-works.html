@@ -1,45 +1,72 @@
-<h2 class="text-3xl font-bold text-gray-900 pt-8">The Secret Sauce: Semantic Embeddings</h2>
-<p>
-    After tokenization, the AI doesn't just store "ID 452." It maps that token into a <strong>High-Dimensional Vector Space</strong>. Every token becomes a vector (a list of hundreds of coordinates). 
-</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How AI Works: Tokens & Logic | Harish Dev Log</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body class="bg-white text-gray-800 antialiased font-sans">
 
-<p>
-    The "magic" is that tokens with similar meanings are placed closer together in this space. This is why the AI knows that "Apple" is closer to "Fruit" than it is to "Airplane."
-</p>
+    <nav class="max-w-3xl mx-auto px-6 py-10">
+        <a href="/blog/" class="text-blue-600 font-bold hover:underline flex items-center">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Back to Engineering Feed
+        </a>
+    </nav>
 
+    <article class="max-w-3xl mx-auto px-6 pb-20">
+        <header class="mb-12">
+            <span class="text-purple-600 font-mono text-xs font-bold tracking-widest uppercase bg-purple-50 px-3 py-1 rounded-full text-center">AI & Machine Learning</span>
+            <h1 class="text-4xl md:text-6xl font-black text-gray-900 mt-4 mb-6 tracking-tight leading-tight">How AI Actually "Thinks": The Logic of Tokens</h1>
+            <div class="flex items-center space-x-4">
+                <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold shadow-lg">H</div>
+                <div>
+                    <p class="font-bold text-gray-900 leading-none">Harish</p>
+                    <p class="text-sm text-gray-500">CSE Engineer • Tech Blogger</p>
+                </div>
+            </div>
+        </header>
 
+        <div class="prose prose-purple lg:prose-xl text-gray-700 leading-relaxed space-y-8 text-lg">
+            <p>Most people think AI "reads" sentences like humans do. But as engineers, we know computers only understand numbers. To bridge this gap, AI uses <strong>Tokenization</strong>.</p>
 
-<div class="bg-blue-50 border-l-4 border-blue-600 p-6 my-8 rounded-r-xl">
-    <h3 class="text-xl font-bold text-blue-900 mb-2 italic">Engineering Fact: Vector Arithmetic</h3>
-    <p class="text-blue-800">
-        Because tokens are just vectors, we can perform math on them! One of the most famous examples in NLP is:
-    </p>
-    <p class="text-2xl font-mono text-center py-4 text-blue-900">
-        Vector("King") - Vector("Man") + Vector("Woman") ≈ Vector("Queen")
-    </p>
-</div>
+            <h2 class="text-3xl font-bold text-gray-900">1. What is a Token?</h2>
+            <p>A token is the basic unit of text. It isn't always a full word; it can be a part of a word or punctuation. For example, "Engineering" might be split into "Engine" and "ering".</p>
+            
+            
 
-<h2 class="text-3xl font-bold text-gray-900 pt-6">Key Engineering Features of LLMs</h2>
-<ul class="list-none space-y-6">
-    <li class="flex items-start">
-        <span class="bg-purple-100 text-purple-700 font-bold px-3 py-1 rounded-lg mr-4">01</span>
-        <div>
-            <p class="font-bold text-gray-900">Attention Mechanism</p>
-            <p class="text-sm text-gray-600 italic">The AI doesn't look at every word equally. It "attends" to the most relevant tokens in a sentence to understand context (e.g., in "The bank of the river," it focuses on "river" to know it's not a financial bank).</p>
+            <h2 class="text-3xl font-bold text-gray-900">2. Semantic Embeddings & Vector Space</h2>
+            <p>After tokenization, the AI maps that token into a high-dimensional <strong>Vector Space</strong>. Every token becomes a list of numbers (a vector). Similar meanings are placed closer together.</p>
+
+            <div class="bg-blue-50 border-l-4 border-blue-600 p-6 my-8 rounded-r-xl">
+                <h3 class="text-xl font-bold text-blue-900 mb-2">Vector Arithmetic</h3>
+                <p class="text-blue-800">Because tokens are vectors, we can perform math on them:</p>
+                <p class="text-2xl font-mono text-center py-4 text-blue-900 italic">
+                    Vector("King") - Vector("Man") + Vector("Woman") ≈ Vector("Queen")
+                </p>
+            </div>
+            
+            
+
+            <h2 class="text-3xl font-bold text-gray-900">3. The Probability Equation</h2>
+            <p>The AI calculates the probability of the *next* token based on previous ones using the Transformer architecture.</p>
+
+            <div class="bg-gray-900 text-white p-8 rounded-3xl shadow-xl space-y-4">
+                <p class="text-gray-300">The probability $P$ of a sequence is:</p>
+                <p class="text-2xl font-mono text-center py-4">
+                    $$P(w_1, ..., w_n) = \prod_{i=1}^{n} P(w_i | w_1, ..., w_{i-1})$$
+                </p>
+            </div>
+
+            <h2 class="text-3xl font-bold text-gray-900">4. Key Engineering Features</h2>
+            <ul class="space-y-4">
+                <li><strong>Context Window:</strong> The "RAM" of the model (e.g., 128k tokens).</li>
+                <li><strong>Attention:</strong> How the model focuses on specific words for context.</li>
+                <li><strong>Temperature:</strong> Controls randomness (0.0 for logic, 1.0 for creativity).</li>
+            </ul>
         </div>
-    </li>
-    <li class="flex items-start">
-        <span class="bg-purple-100 text-purple-700 font-bold px-3 py-1 rounded-lg mr-4">02</span>
-        <div>
-            <p class="font-bold text-gray-900">Context Window Management</p>
-            <p class="text-sm text-gray-600 italic">Every model has a limit (e.g., 128k tokens). Managing this "RAM" of the AI is a crucial task for developers to prevent the model from "hallucinating" or forgetting early instructions.</p>
-        </div>
-    </li>
-    <li class="flex items-start">
-        <span class="bg-purple-100 text-purple-700 font-bold px-3 py-1 rounded-lg mr-4">03</span>
-        <div>
-            <p class="font-bold text-gray-900">Temperature & Top-P</p>
-            <p class="text-sm text-gray-600 italic">These parameters control the randomness of token selection. As an engineer, setting Temperature to 0.0 ensures your API returns consistent, logical code every time.</p>
-        </div>
-    </li>
-</ul>
+    </article>
+</body>
+</html>
