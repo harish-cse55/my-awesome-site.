@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Post | Harish</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body class="bg-white text-gray-800 antialiased">
+
+    <nav class="max-w-3xl mx-auto px-6 py-10">
+        <a href="index.html" class="text-blue-600 font-medium hover:underline">← All Posts</a>
+    </nav>
+
+    <article class="max-w-3xl mx-auto px-6 pb-20">
+        <header class="mb-10">
+            <span class="text-gray-400 font-mono text-sm">March 10, 2026</span>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mt-2 mb-6">Mapping a Custom Domain</h1>
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">H</div>
+                <span class="font-medium text-gray-700">Harish • CSE Engineer</span>
+            </div>
+        </header>
+
+        <div class="prose prose-blue lg:prose-xl text-gray-700 leading-7 space-y-6">
+            <p>Today I successfully mapped my new domain to GitHub Pages. The key was deleting the old Hostinger <strong>A Records</strong> and adding the four GitHub IP addresses.</p>
+            
+            <h3 class="text-2xl font-bold text-gray-900 mt-8">The DNS Config</h3>
+            <p>As a CSE engineer, I prefer using A-records for the apex domain. Here is what the configuration looks like:</p>
+
+            <pre class="rounded-xl shadow-lg"><code class="language-bash"># Checking my new DNS setup
+dig harishcodes.online</code></pre>
+
+            <p>In the next post, I'll be sharing how I'm integrating <strong>AlertMate</strong> with a Spring Boot backend.</p>
+        </div>
+    </article>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+</body>
+</html>
