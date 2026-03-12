@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Harish</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #030712; color: white; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .hidden-section { display: none; }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-6">
+
+    <div id="login-section" class="glass p-8 rounded-3xl w-full max-w-md reveal">
+        <h1 class="text-2xl font-black mb-6 tracking-tight">Admin Login<span class="text-blue-500">.</span></h1>
+        <div class="space-y-4">
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Email</label>
+                <input type="email" id="email" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-blue-500 transition text-white">
+            </div>
+            <div>
+                <label class="text-xs font-bold text-gray-500 uppercase tracking-widest">Password</label>
+                <input type="password" id="password" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-blue-500 transition text-white">
+            </div>
+            <button id="login-btn" class="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-blue-500 hover:text-white transition duration-300">Enter Dashboard</button>
+            <p id="error-msg" class="text-red-400 text-xs text-center"></p>
+        </div>
+    </div>
+
+    <div id="dashboard-section" class="hidden-section w-full max-w-4xl">
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-3xl font-black tracking-tight italic">Systems Control<span class="text-blue-500">.</span></h1>
+            <button id="logout-btn" class="text-xs font-bold text-gray-500 hover:text-white uppercase tracking-widest">Logout</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass p-8 rounded-3xl">
+                <h3 class="text-lg font-bold mb-4">Live Status Control</h3>
+                <p class="text-sm text-gray-400 mb-6">Update the "Live Badge" on the main portfolio.</p>
+                <input type="text" id="status-input" placeholder="e.g., Coding AlertMate" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 mb-4 text-white">
+                <button id="update-status-btn" class="bg-blue-600 px-6 py-2 rounded-lg font-bold text-sm">Update Status</button>
+            </div>
+
+            <div class="glass p-8 rounded-3xl">
+                <h3 class="text-lg font-bold mb-4">Cloud Statistics</h3>
+                <p class="text-sm text-gray-400 mb-6">Live view of current Firestore activity.</p>
+                <div class="text-3xl font-black text-blue-400" id="total-views">---</div>
+                <p class="text-[10px] font-bold text-gray-500 uppercase mt-1">Total Verified Views</p>
+            </div>
+        </div>
+    </article>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // === REPLACE WITH YOUR CONFIG ===
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "harishcodes-online.firebaseapp.com",
+            projectId: "harishcodes-online",
+            storageBucket: "harishcodes-online.appspot.com",
+            messagingSenderId: "YOUR_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const loginSection = document.getElementById('login-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+
+        // === 1. Handle Login ===
+        document.getElementById('login-btn').addEventListener('click', async () => {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (err) {
+                document.getElementById('error-msg').innerText = "Invalid Credentials";
+            }
+        });
+
+        // === 2. Auth State Listener ===
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginSection.classList.add('hidden-section');
+                dashboardSection.classList.remove('hidden-section');
+                loadStats();
+            } else {
+                loginSection.classList.remove('hidden-section');
+                dashboardSection.classList.add('hidden-section');
+            }
+        });
+
+        // === 3. Handle Logout ===
+        document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+        // === 4. Dashboard Logic ===
+        async function loadStats() {
+            const docRef = doc(db, "site_stats", "global_views");
+            const snap = await getDoc(docRef);
+            if(snap.exists()) document.getElementById('total-views').innerText = snap.data().count;
+        }
+
+        // Example: Update Status (Requires Remote Config/Firestore setup)
+        document.getElementById('update-status-btn').addEventListener('click', () => {
+            alert("This would trigger a Firestore update for your live status!");
+        });
+    </script>
+</body>
+</html>
