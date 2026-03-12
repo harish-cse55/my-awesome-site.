@@ -9,13 +9,16 @@
 <body class="bg-gray-50 text-gray-900">
 
     <nav class="max-w-4xl mx-auto px-6 py-10 flex justify-between items-center">
-        <a href="/" class="font-bold text-blue-600">← Portfolio</a>
+        <a href="/" class="font-bold text-blue-600 hover:underline">← Portfolio</a>
         <div class="font-black italic text-xl">Journal.</div>
     </nav>
 
     <main class="max-w-4xl mx-auto px-6 pb-20">
         <div id="blog-container" class="space-y-16">
-            <p class="text-gray-400">Connecting to Firestore...</p>
+            <div id="loader" class="flex flex-col items-center justify-center py-20">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mb-4"></div>
+                <p class="text-gray-400 font-mono text-sm">Syncing with Cloud Firestore...</p>
+            </div>
         </div>
     </main>
 
@@ -23,26 +26,51 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        const firebaseConfig = { /* SAME AS ABOVE */ };
+        // Verified Config for libr-68752
+        const firebaseConfig = {
+            apiKey: "AIzaSyCaeOpiB8z_jJ8m3gmfBiREJyqt2PaqdLQ",
+            authDomain: "libr-68752.firebaseapp.com",
+            projectId: "libr-68752",
+            storageBucket: "libr-68752.firebasestorage.app",
+            messagingSenderId: "395424150999",
+            appId: "1:395424150999:web:d874350d01ae5c90a8c792"
+        };
+
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
         const container = document.getElementById('blog-container');
 
-        // Real-time listener for new blogs
+        // Real-time listener
         const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+        
         onSnapshot(q, (snapshot) => {
-            container.innerHTML = "";
+            if (snapshot.empty) {
+                container.innerHTML = `
+                    <div class="text-center py-20">
+                        <p class="text-gray-400">No logs found in the database.</p>
+                        <p class="text-xs text-gray-300 mt-2 font-mono">Check 'blogs' collection in Firebase Console.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = ""; // Remove loader
             snapshot.forEach((doc) => {
                 const b = doc.data();
                 container.innerHTML += `
-                    <article class="border-b pb-12">
-                        <time class="text-xs font-mono text-blue-500 bg-blue-50 px-2 py-1 rounded">${b.date}</time>
-                        <h2 class="text-3xl font-bold mt-4">${b.title}</h2>
-                        <div class="mt-6 text-gray-700 leading-relaxed text-lg">${b.content}</div>
+                    <article class="border-b border-gray-200 pb-12 reveal">
+                        <time class="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-1 rounded">
+                            ${b.date || 'Recently Published'}
+                        </time>
+                        <h2 class="text-3xl font-bold mt-4 text-gray-900">${b.title}</h2>
+                        <div class="mt-6 text-gray-700 leading-relaxed text-lg prose max-w-none">
+                            ${b.content}
+                        </div>
                     </article>
                 `;
             });
+        }, (error) => {
+            console.error("Firestore Error:", error);
+            container.innerHTML = `<p class="text-red-500 font-mono text-xs">Error: ${error.message}</p>`;
         });
     </script>
 </body>
