@@ -7,14 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #030712; color: white; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #030712; color: white; overflow-x: hidden; }
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
         .hidden-section { display: none; }
+        input::placeholder { color: rgba(255,255,255,0.2); }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-6">
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-6">
 
-    <div id="login-section" class="glass p-8 rounded-3xl w-full max-w-md reveal">
+    <div id="login-section" class="glass p-8 rounded-3xl w-full max-w-md">
         <h1 class="text-2xl font-black mb-6 tracking-tight">Admin Login<span class="text-blue-500">.</span></h1>
         <div class="space-y-4">
             <div>
@@ -26,50 +27,64 @@
                 <input type="password" id="password" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 mt-1 focus:outline-none focus:border-blue-500 transition text-white">
             </div>
             <button id="login-btn" class="w-full bg-white text-black font-bold py-3 rounded-xl hover:bg-blue-500 hover:text-white transition duration-300">Enter Dashboard</button>
-            <p id="error-msg" class="text-red-400 text-xs text-center"></p>
+            <p id="error-msg" class="text-red-400 text-xs text-center mt-2"></p>
         </div>
     </div>
 
     <div id="dashboard-section" class="hidden-section w-full max-w-4xl">
-        <div class="flex justify-between items-center mb-10">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
             <h1 class="text-3xl font-black tracking-tight italic">Systems Control<span class="text-blue-500">.</span></h1>
-            <button id="logout-btn" class="text-xs font-bold text-gray-500 hover:text-white uppercase tracking-widest">Logout</button>
+            <div class="flex items-center gap-4">
+                <span id="user-display" class="text-xs text-gray-500 font-mono"></span>
+                <button id="logout-btn" class="text-xs font-bold text-gray-500 hover:text-white uppercase tracking-widest border border-gray-800 px-3 py-1 rounded-full">Logout</button>
+            </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="glass p-8 rounded-3xl">
-                <h3 class="text-lg font-bold mb-4">Live Status Control</h3>
-                <p class="text-sm text-gray-400 mb-6">Update the "Live Badge" on the main portfolio.</p>
-                <input type="text" id="status-input" placeholder="e.g., Coding AlertMate" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 mb-4 text-white">
-                <button id="update-status-btn" class="bg-blue-600 px-6 py-2 rounded-lg font-bold text-sm">Update Status</button>
+                <h3 class="text-lg font-bold mb-2">Portfolio Status</h3>
+                <p class="text-sm text-gray-400 mb-6">Update the "Live Badge" on harishcodes.online</p>
+                
+                <div class="space-y-4">
+                    <input type="text" id="status-input" placeholder="e.g., Coding AlertMate" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none">
+                    
+                    <select id="status-color" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none">
+                        <option value="green" class="bg-gray-900">Green (Active)</option>
+                        <option value="orange" class="bg-gray-900">Orange (Away)</option>
+                        <option value="red" class="bg-gray-900">Red (Busy)</option>
+                    </select>
+
+                    <button id="update-status-btn" class="w-full bg-blue-600 px-6 py-3 rounded-xl font-bold text-sm hover:bg-blue-500 transition">Push Update</button>
+                </div>
             </div>
 
-            <div class="glass p-8 rounded-3xl">
-                <h3 class="text-lg font-bold mb-4">Cloud Statistics</h3>
-                <p class="text-sm text-gray-400 mb-6">Live view of current Firestore activity.</p>
-                <div class="text-3xl font-black text-blue-400" id="total-views">---</div>
-                <p class="text-[10px] font-bold text-gray-500 uppercase mt-1">Total Verified Views</p>
+            <div class="glass p-8 rounded-3xl flex flex-col justify-center">
+                <h3 class="text-lg font-bold mb-2">Cloud Statistics</h3>
+                <p class="text-sm text-gray-400 mb-6">Real-time Visitor Metrics</p>
+                <div class="text-5xl font-black text-blue-400 tracking-tighter" id="total-views">---</div>
+                <p class="text-[10px] font-bold text-gray-500 uppercase mt-2 tracking-[0.2em]">Total Verified Portfolio Views</p>
+                
+                <button id="refresh-stats" class="mt-8 text-xs text-gray-600 hover:text-gray-400 transition underline underline-offset-4">Refresh Stats</button>
             </div>
         </div>
-    </article>
+    </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // === REPLACE WITH YOUR CONFIG ===
-      
+        // === FIREBASE CONFIG ===
         const firebaseConfig = {
-  apiKey: "AIzaSyCaeOpiB8z_jJ8m3gmfBiREJyqt2PaqdLQ",
-  authDomain: "libr-68752.firebaseapp.com",
-  databaseURL: "https://libr-68752.firebaseio.com",
-  projectId: "libr-68752",
-  storageBucket: "libr-68752.firebasestorage.app",
-  messagingSenderId: "395424150999",
-  appId: "1:395424150999:web:d874350d01ae5c90a8c792",
-  measurementId: "G-583EWMYB0V"
-};
+            apiKey: "AIzaSyCaeOpiB8z_jJ8m3gmfBiREJyqt2PaqdLQ",
+            authDomain: "libr-68752.firebaseapp.com",
+            databaseURL: "https://libr-68752.firebaseio.com",
+            projectId: "libr-68752",
+            storageBucket: "libr-68752.firebasestorage.app",
+            messagingSenderId: "395424150999",
+            appId: "1:395424150999:web:d874350d01ae5c90a8c792",
+            measurementId: "G-583EWMYB0V"
+        };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -85,7 +100,7 @@
             try {
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (err) {
-                document.getElementById('error-msg').innerText = "Invalid Credentials";
+                document.getElementById('error-msg').innerText = "Access Denied: Check Credentials";
             }
         });
 
@@ -94,7 +109,8 @@
             if (user) {
                 loginSection.classList.add('hidden-section');
                 dashboardSection.classList.remove('hidden-section');
-                loadStats();
+                document.getElementById('user-display').innerText = user.email;
+                loadDashboardData();
             } else {
                 loginSection.classList.remove('hidden-section');
                 dashboardSection.classList.add('hidden-section');
@@ -104,17 +120,58 @@
         // === 3. Handle Logout ===
         document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
 
-        // === 4. Dashboard Logic ===
-        async function loadStats() {
-            const docRef = doc(db, "site_stats", "global_views");
-            const snap = await getDoc(docRef);
-            if(snap.exists()) document.getElementById('total-views').innerText = snap.data().count;
+        // === 4. Dashboard Functions ===
+        async function loadDashboardData() {
+            // Load Visitor Stats
+            const statsRef = doc(db, "site_stats", "global_views");
+            const statsSnap = await getDoc(statsRef);
+            if(statsSnap.exists()) {
+                document.getElementById('total-views').innerText = statsSnap.data().count.toLocaleString();
+            }
+
+            // Load Current Status from Firestore
+            const statusRef = doc(db, "admin_config", "status");
+            const statusSnap = await getDoc(statusRef);
+            if(statusSnap.exists()) {
+                document.getElementById('status-input').value = statusSnap.data().text;
+                document.getElementById('status-color').value = statusSnap.data().color;
+            }
         }
 
-        // Example: Update Status (Requires Remote Config/Firestore setup)
-        document.getElementById('update-status-btn').addEventListener('click', () => {
-            alert("This would trigger a Firestore update for your live status!");
+        // Push Update to Firestore
+        document.getElementById('update-status-btn').addEventListener('click', async () => {
+            const newText = document.getElementById('status-input').value;
+            const newColor = document.getElementById('status-color').value;
+            const btn = document.getElementById('update-status-btn');
+
+            btn.innerText = "Updating...";
+            btn.disabled = true;
+
+            try {
+                // We use setDoc with merge to ensure the document exists
+                await setDoc(doc(db, "admin_config", "status"), {
+                    text: newText,
+                    color: newColor,
+                    lastUpdated: new Date()
+                }, { merge: true });
+                
+                btn.innerText = "Success!";
+                btn.classList.replace('bg-blue-600', 'bg-green-600');
+                
+                setTimeout(() => {
+                    btn.innerText = "Push Update";
+                    btn.classList.replace('bg-green-600', 'bg-blue-600');
+                    btn.disabled = false;
+                }, 2000);
+            } catch (err) {
+                console.error(err);
+                alert("Error updating database. Check Firestore Rules.");
+                btn.innerText = "Push Update";
+                btn.disabled = false;
+            }
         });
+
+        document.getElementById('refresh-stats').addEventListener('click', loadDashboardData);
     </script>
 </body>
 </html>
