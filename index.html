@@ -16,22 +16,16 @@
             overflow-x: hidden;
         }
 
-        /* Apple-style Animated Background Mesh */
+        /* Animated Mesh Background */
         .mesh-gradient {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background: radial-gradient(circle at 50% 50%, #1e1b4b 0%, #030712 100%);
-            overflow: hidden;
         }
 
         .blob {
-            position: absolute;
-            width: 500px; height: 500px;
+            position: absolute; width: 500px; height: 500px;
             background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            filter: blur(80px);
-            border-radius: 50%;
-            opacity: 0.15;
+            filter: blur(100px); border-radius: 50%; opacity: 0.15;
             animation: move 20s infinite alternate;
         }
 
@@ -40,19 +34,20 @@
             to { transform: translate(20%, 20%) scale(1.2); }
         }
 
+        /* Glassmorphism Classes */
         .glass {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .reveal {
-            animation: reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        .pulsate {
+            animation: pulsate 1.5s infinite ease-out;
         }
 
-        @keyframes reveal {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes pulsate {
+            0% { transform: scale(0.6); opacity: 1; }
+            100% { transform: scale(1.4); opacity: 0; }
         }
     </style>
 </head>
@@ -63,60 +58,148 @@
         <div class="blob" style="right: 0; bottom: 0; animation-delay: -5s; background: #6366f1;"></div>
     </div>
 
-    <nav class="max-w-6xl mx-auto px-6 py-8 flex justify-between items-center relative z-10">
+    <nav class="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center relative z-10">
         <div class="text-xl font-bold tracking-tighter uppercase">Harish<span class="text-blue-500">.</span></div>
-        <div class="space-x-6 hidden md:flex text-sm font-medium text-gray-400">
-            <a href="#projects" class="hover:text-white transition">Projects</a>
-            <a href="/blog/" class="hover:text-white transition">Engineering Journal</a>
-            <a href="mailto:your-email@example.com" class="glass px-4 py-2 rounded-full text-white hover:bg-white/10 transition">Connect</a>
+        <div class="flex items-center gap-6">
+            
+            <div class="hidden sm:flex glass px-4 py-1 rounded-full items-center text-xs font-medium text-gray-400 gap-2 border border-gray-800">
+                <span id="status-dot" class="relative flex h-2.5 w-2.5">
+                    <span class="pulsate absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                </span>
+                <span id="status-text">Fetching Status...</span>
+            </div>
+
+            <a href="/blog/" class="hover:text-blue-400 text-sm font-medium text-gray-300">Journal</a>
+            <a href="mailto:your-email@example.com" class="glass px-5 py-2.5 rounded-full text-white hover:bg-white/10 transition text-sm font-bold">Connect</a>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto px-6 pt-12 md:pt-24 pb-32 relative z-10 text-center md:text-left">
-        <div class="reveal">
-            <span class="inline-block px-4 py-1 rounded-full border border-blue-500/30 text-blue-400 text-xs font-bold uppercase tracking-widest mb-6 bg-blue-500/10">
-                CSE Engineer • Android Devloper
-            </span>
-            <h1 class="text-5xl md:text-8xl font-extrabold mb-8 tracking-tighter leading-[0.9]">
-                Architecting <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">The Future.</span>
-            </h1>
-            <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl leading-relaxed">
-                Focused on high-performance Android systems. Currently scaling AlertMate and Smart Tools.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <a href="/blog/" class="bg-white text-black px-10 py-4 rounded-full font-bold hover:scale-105 transition duration-300">
-                    Explore Daily Dev Log
-                </a>
-                <a href="https://github.com/harish-cse55" class="glass px-10 py-4 rounded-full font-bold hover:bg-white/10 transition">
-                    View Systems
-                </a>
+    <main class="max-w-6xl mx-auto px-6 pt-16 md:pt-28 pb-32 relative z-10">
+        <span class="inline-block px-4 py-1.5 rounded-full border border-blue-500/30 text-blue-400 text-[11px] sm:text-xs font-bold uppercase tracking-widest mb-6 bg-blue-500/10">
+            CSE Engineer • Android Specialist
+        </span>
+        <h1 class="text-5xl md:text-8xl font-extrabold mb-8 tracking-tighter leading-[0.9] reveal">
+            Architecting <br> <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">The Future.</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-gray-400 mb-12 max-w-2xl leading-relaxed">
+            Focused on high-performance Android systems and scalable Spring Boot backends. Currently scaling AlertMate and Smart Tools.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-5 items-center justify-center md:justify-start">
+            <a href="/blog/" class="w-full sm:w-auto bg-white text-black px-10 py-4 rounded-full font-bold hover:scale-105 transition duration-300 text-center">
+                Explore Daily Dev Log
+            </a>
+            
+            <div class="glass px-6 py-4 rounded-2xl text-center md:text-left min-w-[160px]">
+                <p id="visit-count" class="text-2xl font-black text-white leading-none">---</p>
+                <p class="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Global Portfolio Views</p>
             </div>
         </div>
     </main>
 
-    <section id="projects" class="max-w-6xl mx-auto px-6 py-24 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="glass p-8 md:p-12 rounded-[2.5rem] hover:border-blue-500/50 transition-all duration-500 group">
-                <div class="flex justify-between items-start mb-12">
-                    <i class="fa-solid fa-toolbox text-4xl text-blue-500"></i>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Play Store</span>
-                </div>
-                <h3 class="text-3xl font-bold mb-4">Smart Tools</h3>
-                <p class="text-gray-400 mb-8">A comprehensive 40+ utility suite built with Jetpack Compose & real-time sensor logic.</p>
-                <a href="https://play.google.com/store/apps/details?id=com.harish.woohoosmart" target="_blank" class="font-bold text-sm group-hover:text-blue-400 transition">LAUNCH PROJECT <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i></a>
-            </div>
+    <section id="projects" class="max-w-6xl mx-auto px-6 py-20 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass p-10 md:p-12 rounded-[3rem] hover:border-blue-500/50 transition-all duration-500 group flex flex-col">
+            <i class="fa-solid fa-toolbox text-5xl text-blue-500 mb-12"></i>
+            <h3 class="text-3xl font-bold mb-4">Smart Tools</h3>
+            <p class="text-gray-400 mb-10 flex-grow">Comprehensive 40+ utility suite built with Jetpack Compose & real-time sensor logic.</p>
+            <a href="https://play.google.com/store/apps/details?id=com.harish.woohoosmart" target="_blank" class="font-bold text-sm group-hover:text-blue-400 transition">LAUNCH PROJECT <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i></a>
+        </div>
 
-            <div class="glass p-8 md:p-12 rounded-[2.5rem] hover:border-indigo-500/50 transition-all duration-500 group">
-                <div class="flex justify-between items-start mb-12">
-                    <i class="fa-solid fa-bell text-4xl text-indigo-500"></i>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">Published</span>
-                </div>
-                <h3 class="text-3xl font-bold mb-4">AlertMate</h3>
-                <p class="text-gray-400 mb-8">Modern notification infrastructure for Android. Built for speed and high reliability.</p>
-                <a href="https://play.google.com/store/apps/details?id=com.zeamapps.snoozy" target="_blank" class="font-bold text-sm group-hover:text-indigo-400 transition">LAUNCH PROJECT <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i></a>
-            </div>
+        <div class="glass p-10 md:p-12 rounded-[3rem] hover:border-indigo-500/50 transition-all duration-500 group flex flex-col">
+            <i class="fa-solid fa-bell text-5xl text-indigo-500 mb-12"></i>
+            <h3 class="text-3xl font-bold mb-4">AlertMate</h3>
+            <p class="text-gray-400 mb-10 flex-grow">Notification infrastructure for Android. Built for high speed and extreme reliability.</p>
+            <a href="https://play.google.com/store/apps/details?id=com.zeamapps.snoozy" target="_blank" class="font-bold text-sm group-hover:text-indigo-400 transition">LAUNCH PROJECT <i class="fa-solid fa-arrow-up-right-from-square ml-2"></i></a>
         </div>
     </section>
 
+    <script type="module">
+        // Import necessary SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, updateDoc, increment, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getRemoteConfig, getValue, fetchAndActivate } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-remote-config.js";
+
+        // === 1. Replace with YOUR Firebase Web Configuration ===
+     
+
+        const firebaseConfig = {
+  apiKey: "AIzaSyCaeOpiB8z_jJ8m3gmfBiREJyqt2PaqdLQ",
+  authDomain: "libr-68752.firebaseapp.com",
+  databaseURL: "https://libr-68752.firebaseio.com",
+  projectId: "libr-68752",
+  storageBucket: "libr-68752.firebasestorage.app",
+  messagingSenderId: "395424150999",
+  appId: "1:395424150999:web:d874350d01ae5c90a8c792",
+  measurementId: "G-583EWMYB0V"
+};
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const remoteConfig = getRemoteConfig(app);
+
+        // === 2. Configure Remote Config (Live Status) ===
+        // Minimum fetch interval for testing is 0. Standard is 3600 (1 hour).
+        remoteConfig.settings.minimumFetchIntervalMillis = 0; 
+        
+        // Define default values
+        remoteConfig.defaultConfig = {
+            "dev_status_text": "Monitoring Systems",
+            "dev_status_color": "green" // green, orange, red
+        };
+
+        async function updateLiveStatus() {
+            try {
+                await fetchAndActivate(remoteConfig);
+                const statusText = getValue(remoteConfig, "dev_status_text").asString();
+                const statusColor = getValue(remoteConfig, "dev_status_color").asString();
+
+                document.getElementById('status-text').innerText = statusText;
+                
+                // Set color
+                const dotClasses = document.getElementById('status-dot').children;
+                if (statusColor === "green") {
+                    dotClasses[0].classList.add('bg-green-400');
+                    dotClasses[1].classList.add('bg-green-500');
+                } else if (statusColor === "orange") {
+                    dotClasses[0].classList.add('bg-orange-400');
+                    dotClasses[1].classList.add('bg-orange-500');
+                }
+            } catch (err) {
+                console.error("Firebase Status Error:", err);
+                document.getElementById('status-text').innerText = "Developer Status";
+            }
+        }
+
+        // === 3. Configure Firestore (Visitor Counter) ===
+        async function updateVisitorCounter() {
+            // Reference to the main counter document
+            const counterDocRef = doc(db, "site_stats", "global_views");
+
+            try {
+                // Atomically increment the visit count
+                await updateDoc(counterDocRef, {
+                    count: increment(1)
+                });
+                
+                // Get the updated document to display
+                const docSnap = await getDoc(counterDocRef);
+                const visitCount = docSnap.data().count;
+                document.getElementById('visit-count').innerText = visitCount.toLocaleString();
+
+            } catch (error) {
+                console.warn("Firestore Counter Error (likely needs permission setup):", error);
+                document.getElementById('visit-count').innerText = "Active";
+            }
+        }
+
+        // Initialize both features on load
+        updateLiveStatus();
+        updateVisitorCounter();
+
+        console.log("Firebase Systems Active 🚀");
+    </script>
 </body>
 </html>
