@@ -59,14 +59,17 @@
         import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // === REPLACE WITH YOUR CONFIG ===
+      
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "harishcodes-online.firebaseapp.com",
-            projectId: "harishcodes-online",
-            storageBucket: "harishcodes-online.appspot.com",
-            messagingSenderId: "YOUR_ID",
-            appId: "YOUR_APP_ID"
-        };
+  apiKey: "AIzaSyCaeOpiB8z_jJ8m3gmfBiREJyqt2PaqdLQ",
+  authDomain: "libr-68752.firebaseapp.com",
+  databaseURL: "https://libr-68752.firebaseio.com",
+  projectId: "libr-68752",
+  storageBucket: "libr-68752.firebasestorage.app",
+  messagingSenderId: "395424150999",
+  appId: "1:395424150999:web:d874350d01ae5c90a8c792",
+  measurementId: "G-583EWMYB0V"
+};
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
