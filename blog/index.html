@@ -3,50 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dev Log | Harish</title>
+    <title>Journal | Harish</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 text-gray-900">
 
     <nav class="max-w-4xl mx-auto px-6 py-10 flex justify-between items-center">
-        <a href="/" class="text-gray-500 hover:text-blue-600 transition font-bold flex items-center">
-            <i class="fa-solid fa-arrow-left mr-2"></i> Portfolio
-        </a>
-        <div class="text-xl font-black tracking-tighter uppercase italic text-blue-600">Dev Log.</div>
+        <a href="/" class="font-bold text-blue-600">← Portfolio</a>
+        <div class="font-black italic text-xl">Journal.</div>
     </nav>
 
     <main class="max-w-4xl mx-auto px-6 pb-20">
-        <header class="mb-16 border-b pb-10">
-            <h1 class="text-5xl font-extrabold mb-4">Engineering Journal</h1>
-            <p class="text-gray-500 text-lg">Documenting the daily grind of a CSE Engineer.</p>
-        </header>
-<div class="space-y-16">
-    
-    <article>
-        <time class="text-sm font-mono text-purple-600 bg-purple-50 px-2 py-1 rounded">MARCH 11, 2026</time>
-        <a href="/blog/2026-03-11-how-ai-works.html" class="block group">
-            <h2 class="text-3xl font-bold mt-4 group-hover:text-purple-600 transition tracking-tight">How AI "Thinks": The Logic of Tokens and Probability</h2>
-            <p class="text-gray-600 mt-4 text-lg leading-relaxed">Breaking down how Large Language Models process text, calculate tokens, and use the Transformer architecture to predict the next word.</p>
-            <span class="inline-block mt-4 text-purple-600 font-semibold border-b-2 border-transparent group-hover:border-purple-600 transition">Read Technical Breakdown</span>
-        </a>
-    </article>
-
-    <article>
-        <time class="text-sm font-mono text-green-600 bg-green-50 px-2 py-1 rounded">MARCH 10, 2026</time>
-        <a href="/blog/2026-03-10-setup.html" class="block group">
-            <h2 class="text-3xl font-bold mt-4 group-hover:text-green-600 transition tracking-tight">Zero to Live: Architecting this Portfolio on GitHub Pages</h2>
-            <p class="text-gray-600 mt-4 text-lg leading-relaxed">Step-by-step documentation of mapping harishcodes.online, resolving root 404 errors, and setting up a professional DNS pipeline.</p>
-            <span class="inline-block mt-4 text-green-600 font-semibold border-b-2 border-transparent group-hover:border-green-600 transition">Read Infrastructure Log</span>
-        </a>
-    </article>
-
-</div>
-
-
-
-        
+        <div id="blog-container" class="space-y-16">
+            <p class="text-gray-400">Connecting to Firestore...</p>
+        </div>
     </main>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = { /* SAME AS ABOVE */ };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const container = document.getElementById('blog-container');
+
+        // Real-time listener for new blogs
+        const q = query(collection(db, "blogs"), orderBy("timestamp", "desc"));
+        onSnapshot(q, (snapshot) => {
+            container.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const b = doc.data();
+                container.innerHTML += `
+                    <article class="border-b pb-12">
+                        <time class="text-xs font-mono text-blue-500 bg-blue-50 px-2 py-1 rounded">${b.date}</time>
+                        <h2 class="text-3xl font-bold mt-4">${b.title}</h2>
+                        <div class="mt-6 text-gray-700 leading-relaxed text-lg">${b.content}</div>
+                    </article>
+                `;
+            });
+        });
+    </script>
 </body>
 </html>
